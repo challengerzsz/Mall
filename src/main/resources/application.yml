@@ -1,0 +1,22 @@
+server:
+  port: 8060
+  servlet:
+    context-path: /mall
+
+spring:
+  redis:
+    port: 6379
+    database: 4
+    jedis:
+      pool:
+        max-active: 8
+        min-idle: 0
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/mall?useSSL=false
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: agytorudhcv11
+
+  session:
+    store-type: redis
