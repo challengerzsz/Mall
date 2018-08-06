@@ -5,14 +5,21 @@ package com.bsb.common;
  */
 public enum ResponseCode {
 
-    /**
-     * 成功
-     */
-    SUCCESS(1, "SUCCESS"),
+
     /**
      * 失败
      */
     ERROR(0, "ERROR"),
+
+    /**
+     * 成功
+     */
+    SUCCESS(1, "SUCCESS"),
+
+    /**
+     * 非法参数
+     */
+    ILLEGAL_ARGUMENT(2, "ILLEGAL_ARGUMENT"),
 
     /**
      * 需要登录
