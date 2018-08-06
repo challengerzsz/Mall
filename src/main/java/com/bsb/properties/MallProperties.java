@@ -8,13 +8,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "bsb.mall")
 public class MallProperties {
 
-    private String host;
+    private FtpProperties ftp;
 
-    public String getHost() {
-        return host;
+    public FtpProperties getFtp() {
+        return ftp;
     }
 
-    public void setHost(String host) {
-        this.host = host;
+    public void setFtp(FtpProperties ftp) {
+        this.ftp = ftp;
     }
 }

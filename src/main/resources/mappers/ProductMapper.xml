@@ -190,6 +190,7 @@
     SELECT
     <include refid="Base_Column_List"/>
     from mmall_product
+--     where标签自动处理and和or前缀匹配逻辑
     <where>
       <if test="productName != null">
         and name like #{productName}

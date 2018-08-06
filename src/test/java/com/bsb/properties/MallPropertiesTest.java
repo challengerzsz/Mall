@@ -18,6 +18,6 @@ public class MallPropertiesTest {
 
     @Test
     public void testProperties() {
-        System.out.println(mallProperties.getHost());
+        System.out.println(mallProperties.getFtp().getServerHttpPrefix());
     }
 }

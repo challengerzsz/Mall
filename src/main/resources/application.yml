@@ -29,4 +29,8 @@ mybatis:
 
 bsb:
   mall:
-    host: localhost
+    ftp:
+      serverIp: 182.92.82.103
+      user: mmallftp
+      password: mmall123456
+      serverHttpPrefix: http://img.happymmall.com/

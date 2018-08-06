@@ -42,6 +42,10 @@ dependencies {
     compileOnly "org.springframework.boot:spring-boot-configuration-processor"
     compile('org.springframework.session:spring-session-jdbc')
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
+    compile group: 'com.github.pagehelper', name: 'pagehelper', version: '5.1.4'
+    compile group: 'com.github.jsqlparser', name: 'jsqlparser', version: '1.2'
+    compile group: 'com.github.miemiedev', name: 'mybatis-paginator', version: '1.2.17'
+
     runtime('mysql:mysql-connector-java')
     providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
     testCompile('org.springframework.boot:spring-boot-starter-test')
