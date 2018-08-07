@@ -11,6 +11,8 @@ import com.bsb.web.service.IProductService;
 import com.bsb.web.service.IUserService;
 import com.bsb.web.vo.ProductDetiailVo;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +33,7 @@ import java.util.Map;
 @RequestMapping("/manage/product")
 public class ProductManageController {
 
+    private Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private IUserService userService;
     @Autowired
@@ -136,6 +139,7 @@ public class ProductManageController {
         if (userService.checkAdminRole(user).isSuccess()) {
 
             String path = request.getSession().getServletContext().getRealPath("upload");
+            logger.info("request取出的路径 {}", path);
 
             String targetFileName = fileService.upload(file, path);
             String url = mallProperties.getFtp().getServerHttpPrefix() + targetFileName;
