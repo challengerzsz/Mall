@@ -8,9 +8,19 @@ public class FtpProperties {
 
     private String ftp;
     private String serverIp;
+    private String serverPort;
     private String user;
     private String password;
     private String serverHttpPrefix;
+
+
+    public String getServerPort() {
+        return serverPort;
+    }
+
+    public void setServerPort(String serverPort) {
+        this.serverPort = serverPort;
+    }
 
     public String getFtp() {
         return ftp;
@@ -51,4 +61,6 @@ public class FtpProperties {
     public void setServerHttpPrefix(String serberHttpPrefix) {
         this.serverHttpPrefix = serberHttpPrefix;
     }
+
+
 }

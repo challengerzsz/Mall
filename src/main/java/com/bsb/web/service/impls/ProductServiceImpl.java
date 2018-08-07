@@ -170,6 +170,7 @@ public class ProductServiceImpl implements IProductService {
 
         PageHelper.startPage(pageNum, pageSize);
         if (StringUtils.isNotBlank(productName)) {
+            //完成sql模糊查询拼接产品名
             productName = new StringBuilder().append("%").append(productName).append("%").toString();
         }
 

@@ -21,16 +21,23 @@ spring:
 
   session:
     store-type: redis
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB
 
 
 mybatis:
   mapper-locations: classpath*:mappers/*.xml
 
 
+
 bsb:
   mall:
     ftp:
-      serverIp: 182.92.82.103
-      user: mmallftp
-      password: mmall123456
-      serverHttpPrefix: http://img.happymmall.com/
+      serverIp: 111.230.134.198
+      serverPort: 21
+      user: zeng
+      password: agytorudhcv11
+      serverHttpPrefix: http://111.230.134.198/
