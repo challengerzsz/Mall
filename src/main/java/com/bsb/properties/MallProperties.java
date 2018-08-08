@@ -10,6 +10,16 @@ public class MallProperties {
 
     private FtpProperties ftp;
 
+    private AliPayProperties aliPay;
+
+    public AliPayProperties getAliPay() {
+        return aliPay;
+    }
+
+    public void setAliPay(AliPayProperties aliPay) {
+        this.aliPay = aliPay;
+    }
+
     public FtpProperties getFtp() {
         return ftp;
     }

@@ -41,3 +41,5 @@ bsb:
       user: zeng
       password: agytorudhcv11
       serverHttpPrefix: http://xiyoumobilebackres.xyz/
+    aliPay:
+      callBackUrl: http://www.xiyoumobileback.club:8080/mall/order/alipayCallBack
