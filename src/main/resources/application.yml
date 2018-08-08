@@ -36,8 +36,8 @@ mybatis:
 bsb:
   mall:
     ftp:
-      serverIp: 111.230.134.198
+      serverIp: xiyoumobilebackres.xyz
       serverPort: 21
       user: zeng
       password: agytorudhcv11
-      serverHttpPrefix: http://111.230.134.198/
+      serverHttpPrefix: http://xiyoumobilebackres.xyz/

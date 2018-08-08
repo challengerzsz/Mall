@@ -24,6 +24,17 @@ public class Const {
 
     }
 
+    public interface Cart {
+        //购物车中产品选中状态
+        int CHECKED = 1;
+        //购物车中产品未选中状态
+        int UN_CHECKED = 0;
+        //产品库存<购物车库存
+        String LIMIT_NUM_FAIL = "LIMIT_NUM_FAIL";
+        //产品库存>购物车库存
+        String LIMIT_NUM_SUCCESS = "LIMIT_NUM_SUCCESS";
+    }
+
     public interface Role {
         int ROLE_CUSTOMER = 0;
         int ROLE_ADMIN = 1;
