@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8060
   servlet:
     context-path: /mall
 
@@ -42,4 +42,5 @@ bsb:
       password: agytorudhcv11
       serverHttpPrefix: http://xiyoumobilebackres.xyz/
     aliPay:
-      callBackUrl: http://www.xiyoumobileback.club:8080/mall/order/alipayCallBack
+      callBackUrl: http://9rx295.natappfree.cc/mall/order/aliPayCallBack
+#      callBackUrl: http://www.xiyoumobileback.club:8080/mall/order/aliPayCallBack

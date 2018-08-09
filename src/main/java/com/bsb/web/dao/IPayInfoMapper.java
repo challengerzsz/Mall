@@ -5,7 +5,7 @@ import com.bsb.web.pojo.PayInfo;
 /**
  * @author zeng
  */
-public interface PayInfoMapper {
+public interface IPayInfoMapper {
 
     int deleteByPrimaryKey(Integer id);
 

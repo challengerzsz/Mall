@@ -10,14 +10,18 @@ import com.alipay.demo.trade.model.result.AlipayF2FPrecreateResult;
 import com.alipay.demo.trade.service.AlipayTradeService;
 import com.alipay.demo.trade.service.impl.AlipayTradeServiceImpl;
 import com.alipay.demo.trade.utils.ZxingUtils;
+import com.bsb.common.Const;
 import com.bsb.common.ServerResponse;
 import com.bsb.properties.MallProperties;
 import com.bsb.util.BigDecimalUtil;
+import com.bsb.util.DateTimeUtil;
 import com.bsb.util.FtpUtil;
 import com.bsb.web.dao.IOrderItemMapper;
 import com.bsb.web.dao.IOrderMapper;
+import com.bsb.web.dao.IPayInfoMapper;
 import com.bsb.web.pojo.Order;
 import com.bsb.web.pojo.OrderItem;
+import com.bsb.web.pojo.PayInfo;
 import com.bsb.web.service.IOrderService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -46,6 +50,8 @@ public class OrderServiceImpl implements IOrderService {
     @Autowired
     private IOrderItemMapper orderItemMapper;
     @Autowired
+    private IPayInfoMapper payInfoMapper;
+    @Autowired
     private BigDecimalUtil bigDecimalUtil;
     @Autowired
     private MallProperties mallProperties;
@@ -56,6 +62,7 @@ public class OrderServiceImpl implements IOrderService {
 
         Map<String, String> resultMap = Maps.newHashMap();
         Order order = orderMapper.selectByUserIdAndOrderNo(userId, orderNo);
+
         if (order == null) {
             return ServerResponse.createByErrorMsg("用户不存在该订单");
         }
@@ -186,5 +193,50 @@ public class OrderServiceImpl implements IOrderService {
             }
             logger.info("body:" + response.getBody());
         }
+    }
+
+    public ServerResponse aliPayCallBack(Map<String,String> params) {
+
+        Long orderNo = Long.valueOf(params.get("out_trade_no"));
+        String tradeNo = params.get("trade_no");
+        String tradeStatus = params.get("trade_status");
+
+        Order order = orderMapper.selectByOrderNo(orderNo);
+        if (order == null) {
+            return ServerResponse.createByErrorMsg("非本项目订单，回调忽略");
+        }
+        if (order.getStatus() >= Const.OrderStatusEnum.PAID.getCode()) {
+            return ServerResponse.createBySuccess("支付宝重复调用");
+        }
+        if (Const.AlipayCallBack.TRADE_STATUS_TRADE_SUCCESS.equals(tradeStatus)) {
+            order.setPaymentTime(DateTimeUtil.strToDate(params.get("gmt_payment")));
+            order.setStatus(Const.OrderStatusEnum.PAID.getCode());
+            orderMapper.updateByPrimaryKeySelective(order);
+        }
+
+        PayInfo payInfo = new PayInfo();
+        payInfo.setUserId(order.getUserId());
+        payInfo.setOrderNo(order.getOrderNo());
+        payInfo.setPayPlatform(Const.PayPlatformEnum.ALIPAY.getCode());
+        payInfo.setPlatformNumber(tradeNo);
+        payInfo.setPlatformStatus(tradeStatus);
+
+        payInfoMapper.insertSelective(payInfo);
+        return ServerResponse.createBySuccess();
+    }
+
+
+    public ServerResponse queryOrderPayStatus(Integer userId, Long orderNo) {
+
+        Order order = orderMapper.selectByUserIdAndOrderNo(userId, orderNo);
+        if (order == null) {
+            return ServerResponse.createByErrorMsg("用户没有该订单");
+        }
+
+        if (order.getStatus() >= Const.OrderStatusEnum.PAID.getCode()) {
+            return ServerResponse.createBySuccess();
+        }
+
+        return ServerResponse.createByError();
     }
 }
