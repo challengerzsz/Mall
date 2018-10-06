@@ -11,6 +11,8 @@ spring:
       pool:
         max-active: 8
         min-idle: 0
+  thymeleaf:
+    mode: HTML
 
   datasource:
     url: jdbc:mysql://localhost:3306/mmall?useSSL=false&characterEncoding=utf8
