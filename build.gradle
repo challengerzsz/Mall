@@ -52,6 +52,8 @@ dependencies {
     compile group: 'commons-net', name: 'commons-net', version: '3.6'
     compile group: 'com.google.guava', name:'guava', version:'20.0'
     compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.2'
+    // https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-mapper-asl
+    compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version: '1.9.13'
     //    alipay
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
     compile group: 'commons-codec', name: 'commons-codec', version: '1.10'
