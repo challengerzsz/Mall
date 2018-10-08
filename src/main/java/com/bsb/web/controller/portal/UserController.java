@@ -3,6 +3,9 @@ package com.bsb.web.controller.portal;
 import com.bsb.common.Const;
 import com.bsb.common.ResponseCode;
 import com.bsb.common.ServerResponse;
+import com.bsb.util.CookieUtil;
+import com.bsb.util.JsonUtil;
+import com.bsb.util.RedisUtilFactory;
 import com.bsb.web.pojo.User;
 import com.bsb.web.service.IUserService;
 import org.apache.commons.lang3.StringUtils;
@@ -11,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -24,6 +28,8 @@ public class UserController {
 
     @Autowired
     private IUserService userService;
+    @Autowired
+    private RedisUtilFactory redisUtilFactory;
 
     /**
      * 用户登录
@@ -32,14 +38,16 @@ public class UserController {
      * @return
      */
     @PostMapping("/login")
-    public ServerResponse<User> login(String username, String password, HttpSession session) {
+    public ServerResponse<User> login(String username, String password, HttpSession session, HttpServletResponse response) {
 
-        ServerResponse<User> response = userService.login(username, password);
-        if (response.isSuccess()) {
-            session.setAttribute(Const.CURRENT_USER, response.getData());
+        ServerResponse<User> serverResponse = userService.login(username, password);
+        if (serverResponse.isSuccess()) {
+
+            CookieUtil.writeLoginToken(response, session.getId());
+            redisUtilFactory.setRedisValueEx(session.getId(), JsonUtil.objToString(serverResponse.getData()),
+                    Const.RedisCacheExTime.REDIS_SESSION_EXTIME);
         }
-
-        return response;
+        return serverResponse;
     }
 
     @PostMapping("/logout")

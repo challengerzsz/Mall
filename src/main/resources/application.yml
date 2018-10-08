@@ -6,7 +6,7 @@ server:
 spring:
   redis:
     port: 6379
-    database: 4
+    database: 0
     jedis:
       pool:
         max-active: 8
@@ -21,8 +21,8 @@ spring:
     password: agytorudhcv11
 
 
-  session:
-    store-type: redis
+#  session:
+#    store-type: redis
   servlet:
     multipart:
       enabled: true

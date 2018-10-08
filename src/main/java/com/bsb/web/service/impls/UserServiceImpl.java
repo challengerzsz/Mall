@@ -3,7 +3,7 @@ package com.bsb.web.service.impls;
 import com.bsb.common.Const;
 import com.bsb.common.ServerResponse;
 import com.bsb.util.MD5Util;
-import com.bsb.util.RedisUtil;
+import com.bsb.util.RedisUtilFactory;
 import com.bsb.web.dao.IUserMapper;
 import com.bsb.web.pojo.User;
 import com.bsb.web.service.IUserService;
@@ -24,7 +24,7 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private IUserMapper userMapper;
     @Autowired
-    private RedisUtil redisUtil;
+    private RedisUtilFactory redisUtil;
 
     @Override
     public ServerResponse<User> login(String username, String password) {
