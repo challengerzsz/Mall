@@ -74,6 +74,7 @@ public class UserController {
     public ServerResponse<User> getUserInfo(HttpServletRequest request) {
 
         String loginToken = CookieUtil.readLoginToken(request);
+        logger.error("error {}", loginToken);
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMsg("用户未登录");
         }
@@ -103,9 +104,15 @@ public class UserController {
     }
 
     @PostMapping("/resetPassword")
-    public ServerResponse<String> resetPassword(HttpSession session, String oldPassword, String newPassword) {
+    public ServerResponse<String> resetPassword(HttpServletRequest request, String oldPassword, String newPassword) {
 
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        String loginToken = CookieUtil.readLoginToken(request);
+        logger.error("error {}", loginToken);
+        if (StringUtils.isEmpty(loginToken)) {
+            return ServerResponse.createByErrorMsg("用户未登录");
+        }
+        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorMsg("用户未登录");
         }
@@ -114,9 +121,15 @@ public class UserController {
     }
 
     @PostMapping("/updateInfo")
-    public ServerResponse<User> updateInfo(HttpSession session, User user) {
+    public ServerResponse<User> updateInfo(HttpServletRequest request, User user) {
 
-        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+        String loginToken = CookieUtil.readLoginToken(request);
+        logger.error("error {}", loginToken);
+        if (StringUtils.isEmpty(loginToken)) {
+            return ServerResponse.createByErrorMsg("用户未登录");
+        }
+        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        User currentUser = JsonUtil.stringToObj(userJson, User.class);
         if (currentUser == null) {
             return ServerResponse.createByErrorMsg("用户未登录");
         }
@@ -126,16 +139,23 @@ public class UserController {
 
         ServerResponse<User> response = userService.updateInfo(user);
         if (response.isSuccess()) {
-            session.setAttribute(Const.CURRENT_USER, response.getData());
+            redisUtilFactory.setRedisValueEx(loginToken, JsonUtil.objToString(user),
+                    Const.RedisCacheExTime.REDIS_SESSION_EXTIME);
         }
 
         return response;
     }
 
     @GetMapping("/getInfo")
-    public ServerResponse<User> getInfo(HttpSession session) {
+    public ServerResponse<User> getInfo(HttpServletRequest request) {
 
-        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+        String loginToken = CookieUtil.readLoginToken(request);
+        logger.error("error {}", loginToken);
+        if (StringUtils.isEmpty(loginToken)) {
+            return ServerResponse.createByErrorMsg("用户未登录");
+        }
+        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        User currentUser = JsonUtil.stringToObj(userJson, User.class);
         if (currentUser == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), "未登录，需要强制登录");
         }
