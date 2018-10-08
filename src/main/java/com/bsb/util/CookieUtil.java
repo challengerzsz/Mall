@@ -15,7 +15,7 @@ public class CookieUtil {
     /**
      * 保证domain是在一级域名下，子域名即可看到这个cookie
      */
-    private final static String COOKIE_DOMAIN = ".mall.com";
+    private final static String COOKIE_DOMAIN = "mall.com";
 
     private final static String COOKIE_NAME = "mall_login_token";
 
@@ -23,8 +23,9 @@ public class CookieUtil {
 
         Cookie cookie = new Cookie(COOKIE_NAME, token);
         cookie.setDomain(COOKIE_DOMAIN);
-        //根目录能够获取该cookie
+        //设置cookie的path为/　这样二级域名可以共享到最大域名下的cookie实现共享
         cookie.setPath("/");
+        cookie.setHttpOnly(true);
         //若不设置cookie的有效期 生命周期为浏览器的生命周期 在内存不会持久化到硬盘
         cookie.setMaxAge(60 * 60 * 24 * 365);
         logger.info("write cookieName :{}, cookieValue :{}", cookie.getName(), cookie.getValue());

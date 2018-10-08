@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -33,6 +34,7 @@ public class UserController {
 
     /**
      * 用户登录
+     *
      * @param username
      * @param password
      * @return
@@ -42,7 +44,6 @@ public class UserController {
 
         ServerResponse<User> serverResponse = userService.login(username, password);
         if (serverResponse.isSuccess()) {
-
             CookieUtil.writeLoginToken(response, session.getId());
             redisUtilFactory.setRedisValueEx(session.getId(), JsonUtil.objToString(serverResponse.getData()),
                     Const.RedisCacheExTime.REDIS_SESSION_EXTIME);
@@ -51,10 +52,10 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    public ServerResponse<String> logout(HttpSession session) {
-
-        session.removeAttribute(Const.CURRENT_USER);
-
+    public ServerResponse<String> logout(HttpServletRequest request, HttpServletResponse response) {
+        String loginToken = CookieUtil.readLoginToken(request);
+        CookieUtil.delLoginToken(request, response);
+        redisUtilFactory.delete(loginToken);
         return ServerResponse.createBySuccessMsg("注销成功");
     }
 
@@ -70,12 +71,15 @@ public class UserController {
     }
 
     @GetMapping("/userInfo")
-    public ServerResponse<User> getUserInfo(HttpSession session) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
-        user.setPassword(StringUtils.EMPTY);
-        if (user == null) {
+    public ServerResponse<User> getUserInfo(HttpServletRequest request) {
+
+        String loginToken = CookieUtil.readLoginToken(request);
+        if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMsg("用户未登录");
         }
+        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        User user = JsonUtil.stringToObj(userJson, User.class);
+        user.setPassword(StringUtils.EMPTY);
 
         return ServerResponse.createBySuccess(user);
     }
