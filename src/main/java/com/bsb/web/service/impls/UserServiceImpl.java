@@ -3,7 +3,7 @@ package com.bsb.web.service.impls;
 import com.bsb.common.Const;
 import com.bsb.common.ServerResponse;
 import com.bsb.util.MD5Util;
-import com.bsb.util.RedisUtil;
+import com.bsb.util.RedisUtilFactory;
 import com.bsb.web.dao.IUserMapper;
 import com.bsb.web.pojo.User;
 import com.bsb.web.service.IUserService;
@@ -24,7 +24,7 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private IUserMapper userMapper;
     @Autowired
-    private RedisUtil redisUtil;
+    private RedisUtilFactory redisUtil;
 
     @Override
     public ServerResponse<User> login(String username, String password) {
@@ -98,8 +98,8 @@ public class UserServiceImpl implements IUserService {
 
     public ServerResponse<String> getQuestion(String username) {
 
-        ServerResponse validREsponse = this.checkValid(username, Const.USERNAME);
-        if (validREsponse.isSuccess()) {
+        ServerResponse validResponse = this.checkValid(username, Const.USERNAME);
+        if (validResponse.isSuccess()) {
             return ServerResponse.createByErrorMsg("用户不存在");
         }
 
@@ -115,7 +115,7 @@ public class UserServiceImpl implements IUserService {
         int resultCount = userMapper.checkAnswer(username, question, answer);
         if (resultCount > 0) {
             String forgetToken = UUID.randomUUID().toString();
-            redisUtil.setRedisValue(TOKEN_PREFIX + username, forgetToken);
+            redisUtil.setRedisValueEx(TOKEN_PREFIX + username, forgetToken, (60 * 5));
             return ServerResponse.createBySuccess(forgetToken);
         }
 

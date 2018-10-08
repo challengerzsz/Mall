@@ -3,13 +3,20 @@ package com.bsb.web.controller.portal;
 import com.bsb.common.Const;
 import com.bsb.common.ResponseCode;
 import com.bsb.common.ServerResponse;
+import com.bsb.util.CookieUtil;
+import com.bsb.util.JsonUtil;
+import com.bsb.util.RedisUtilFactory;
 import com.bsb.web.pojo.Shipping;
 import com.bsb.web.pojo.User;
 import com.bsb.web.service.IShippingService;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -19,13 +26,23 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/shipping")
 public class ShippingController {
 
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
     @Autowired
     private IShippingService shippingService;
+    @Autowired
+    private RedisUtilFactory redisUtilFactory;
 
     @PostMapping("/add")
-    public ServerResponse add(HttpSession session, Shipping shipping) {
+    public ServerResponse add(HttpServletRequest request, Shipping shipping) {
 
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        String loginToken = CookieUtil.readLoginToken(request);
+        logger.error("error {}", loginToken);
+        if (StringUtils.isEmpty(loginToken)) {
+            return ServerResponse.createByErrorMsg("用户未登录");
+        }
+        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -34,9 +51,15 @@ public class ShippingController {
     }
 
     @PostMapping("/delete")
-    public ServerResponse delete(HttpSession session, Integer shippingId) {
+    public ServerResponse delete(HttpServletRequest request, Integer shippingId) {
 
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        String loginToken = CookieUtil.readLoginToken(request);
+        logger.error("error {}", loginToken);
+        if (StringUtils.isEmpty(loginToken)) {
+            return ServerResponse.createByErrorMsg("用户未登录");
+        }
+        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -45,9 +68,15 @@ public class ShippingController {
     }
 
     @PostMapping("/update")
-    public ServerResponse update(HttpSession session, Shipping shipping) {
+    public ServerResponse update(HttpServletRequest request, Shipping shipping) {
 
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        String loginToken = CookieUtil.readLoginToken(request);
+        logger.error("error {}", loginToken);
+        if (StringUtils.isEmpty(loginToken)) {
+            return ServerResponse.createByErrorMsg("用户未登录");
+        }
+        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -56,9 +85,15 @@ public class ShippingController {
     }
 
     @PostMapping("/search")
-    public ServerResponse<Shipping> search(HttpSession session, Integer shippingId) {
+    public ServerResponse<Shipping> search(HttpServletRequest request, Integer shippingId) {
 
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        String loginToken = CookieUtil.readLoginToken(request);
+        logger.error("error {}", loginToken);
+        if (StringUtils.isEmpty(loginToken)) {
+            return ServerResponse.createByErrorMsg("用户未登录");
+        }
+        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -69,9 +104,15 @@ public class ShippingController {
     @GetMapping("/list")
     public ServerResponse<PageInfo> list(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                          @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
-                                         HttpSession session) {
+                                         HttpServletRequest request) {
 
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        String loginToken = CookieUtil.readLoginToken(request);
+        logger.error("error {}", loginToken);
+        if (StringUtils.isEmpty(loginToken)) {
+            return ServerResponse.createByErrorMsg("用户未登录");
+        }
+        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }

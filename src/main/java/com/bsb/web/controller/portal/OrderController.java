@@ -6,16 +6,19 @@ import com.alipay.demo.trade.config.Configs;
 import com.bsb.common.Const;
 import com.bsb.common.ResponseCode;
 import com.bsb.common.ServerResponse;
+import com.bsb.util.CookieUtil;
+import com.bsb.util.JsonUtil;
+import com.bsb.util.RedisUtilFactory;
 import com.bsb.web.pojo.User;
 import com.bsb.web.service.IOrderService;
 import com.google.common.collect.Maps;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -30,12 +33,20 @@ public class OrderController {
 
     @Autowired
     private IOrderService orderService;
+    @Autowired
+    private RedisUtilFactory redisUtilFactory;
 
 
     @PostMapping("/create")
-    public ServerResponse create(HttpSession session, Integer shippingId) {
+    public ServerResponse create(HttpServletRequest request, Integer shippingId) {
 
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        String loginToken = CookieUtil.readLoginToken(request);
+        logger.error("error {}", loginToken);
+        if (StringUtils.isEmpty(loginToken)) {
+            return ServerResponse.createByErrorMsg("用户未登录");
+        }
+        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -44,9 +55,15 @@ public class OrderController {
     }
 
     @PostMapping("/cancel")
-    public ServerResponse cancel(HttpSession session, Long orderNo) {
+    public ServerResponse cancel(HttpServletRequest request, Long orderNo) {
 
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        String loginToken = CookieUtil.readLoginToken(request);
+        logger.error("error {}", loginToken);
+        if (StringUtils.isEmpty(loginToken)) {
+            return ServerResponse.createByErrorMsg("用户未登录");
+        }
+        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -55,9 +72,15 @@ public class OrderController {
     }
 
     @PostMapping("/getOrderCartProducts")
-    public ServerResponse getOrderCartProducts(HttpSession session) {
+    public ServerResponse getOrderCartProducts(HttpServletRequest request) {
 
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        String loginToken = CookieUtil.readLoginToken(request);
+        logger.error("error {}", loginToken);
+        if (StringUtils.isEmpty(loginToken)) {
+            return ServerResponse.createByErrorMsg("用户未登录");
+        }
+        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -66,9 +89,15 @@ public class OrderController {
     }
 
     @PostMapping("/pay")
-    public ServerResponse pay(HttpSession session, Long orderNo, HttpServletRequest request) {
+    public ServerResponse pay(HttpServletRequest request, Long orderNo) {
 
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        String loginToken = CookieUtil.readLoginToken(request);
+        logger.error("error {}", loginToken);
+        if (StringUtils.isEmpty(loginToken)) {
+            return ServerResponse.createByErrorMsg("用户未登录");
+        }
+        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -79,7 +108,7 @@ public class OrderController {
     }
 
     @PostMapping("aliPayCallBack")
-    public Object  aliPayCallBack(HttpServletRequest request) {
+    public Object aliPayCallBack(HttpServletRequest request) {
 
         Map<String,String> params = Maps.newHashMap();
 
@@ -122,9 +151,15 @@ public class OrderController {
     }
 
     @PostMapping("/queryOrderPayStatus")
-    public ServerResponse<Boolean> queryOrderPayStatus(HttpSession session, Long orderNo) {
+    public ServerResponse<Boolean> queryOrderPayStatus(HttpServletRequest request, Long orderNo) {
 
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        String loginToken = CookieUtil.readLoginToken(request);
+        logger.error("error {}", loginToken);
+        if (StringUtils.isEmpty(loginToken)) {
+            return ServerResponse.createByErrorMsg("用户未登录");
+        }
+        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -138,9 +173,15 @@ public class OrderController {
     }
 
     @GetMapping("/detail")
-    public ServerResponse getDetail(HttpSession session, Long orderNo) {
+    public ServerResponse getDetail(HttpServletRequest request, Long orderNo) {
 
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        String loginToken = CookieUtil.readLoginToken(request);
+        logger.error("error {}", loginToken);
+        if (StringUtils.isEmpty(loginToken)) {
+            return ServerResponse.createByErrorMsg("用户未登录");
+        }
+        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -149,10 +190,16 @@ public class OrderController {
     }
 
     @GetMapping("/list")
-    public ServerResponse getList(HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+    public ServerResponse getList(HttpServletRequest request, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                   @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
 
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        String loginToken = CookieUtil.readLoginToken(request);
+        logger.error("error {}", loginToken);
+        if (StringUtils.isEmpty(loginToken)) {
+            return ServerResponse.createByErrorMsg("用户未登录");
+        }
+        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }

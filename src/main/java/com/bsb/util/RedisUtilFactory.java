@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
  * @author zeng
  */
 @Component
-public class RedisUtil {
+public class RedisUtilFactory {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -43,7 +43,8 @@ public class RedisUtil {
     public void setRedisValueEx(String key, String value, int exTime) {
 
         try {
-            redisTemplate.opsForValue().set(key, value, 30, TimeUnit.SECONDS);
+            logger.debug("enter set method");
+            redisTemplate.opsForValue().set(key, value, exTime, TimeUnit.SECONDS);
         } catch (Exception e) {
             logger.error("setEx key {} value {} error", key, value, e);
         }
