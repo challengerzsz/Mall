@@ -1,12 +1,11 @@
 package com.bsb.web.controller.backend;
 
-import com.bsb.common.Const;
 import com.bsb.common.ResponseCode;
 import com.bsb.common.ServerResponse;
 import com.bsb.properties.MallProperties;
 import com.bsb.util.CookieUtil;
 import com.bsb.util.JsonUtil;
-import com.bsb.util.RedisUtilFactory;
+import com.bsb.util.RedisUtil;
 import com.bsb.web.pojo.Product;
 import com.bsb.web.pojo.User;
 import com.bsb.web.service.IFileService;
@@ -25,7 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,7 +44,7 @@ public class ProductManageController {
     @Autowired
     private MallProperties mallProperties;
     @Autowired
-    private RedisUtilFactory redisUtilFactory;
+    private RedisUtil redisUtil;
 
     @PostMapping("/save")
     public ServerResponse saveProduct(HttpServletRequest request, Product product) {
@@ -56,7 +54,7 @@ public class ProductManageController {
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMsg("用户未登录");
         }
-        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        String userJson = redisUtil.getRedisValue(loginToken);
         User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请重新登录");
@@ -79,7 +77,7 @@ public class ProductManageController {
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMsg("用户未登录");
         }
-        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        String userJson = redisUtil.getRedisValue(loginToken);
         User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请重新登录");
@@ -102,7 +100,7 @@ public class ProductManageController {
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMsg("用户未登录");
         }
-        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        String userJson = redisUtil.getRedisValue(loginToken);
         User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请重新登录");
@@ -125,7 +123,7 @@ public class ProductManageController {
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMsg("用户未登录");
         }
-        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        String userJson = redisUtil.getRedisValue(loginToken);
         User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请重新登录");
@@ -148,7 +146,7 @@ public class ProductManageController {
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMsg("用户未登录");
         }
-        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        String userJson = redisUtil.getRedisValue(loginToken);
         User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请重新登录");
@@ -171,7 +169,7 @@ public class ProductManageController {
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMsg("用户未登录");
         }
-        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        String userJson = redisUtil.getRedisValue(loginToken);
         User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请重新登录");
@@ -209,7 +207,7 @@ public class ProductManageController {
             resultMap.put("msg", "请登录管理员账户");
             return resultMap;
         }
-        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        String userJson = redisUtil.getRedisValue(loginToken);
         User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             resultMap.put("success", false);

@@ -3,7 +3,7 @@ package com.bsb.web.service.impls;
 import com.bsb.common.Const;
 import com.bsb.common.ServerResponse;
 import com.bsb.util.MD5Util;
-import com.bsb.util.RedisUtilFactory;
+import com.bsb.util.RedisUtil;
 import com.bsb.web.dao.IUserMapper;
 import com.bsb.web.pojo.User;
 import com.bsb.web.service.IUserService;
@@ -24,7 +24,7 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private IUserMapper userMapper;
     @Autowired
-    private RedisUtilFactory redisUtil;
+    private RedisUtil redisUtil;
 
     @Override
     public ServerResponse<User> login(String username, String password) {
@@ -128,8 +128,8 @@ public class UserServiceImpl implements IUserService {
             return ServerResponse.createByErrorMsg("参数错误，token或密码为空");
         }
 
-        ServerResponse validREsponse = this.checkValid(username, Const.USERNAME);
-        if (validREsponse.isSuccess()) {
+        ServerResponse validResponse = this.checkValid(username, Const.USERNAME);
+        if (validResponse.isSuccess()) {
             return ServerResponse.createByErrorMsg("用户不存在");
         }
 
@@ -146,7 +146,7 @@ public class UserServiceImpl implements IUserService {
                 return ServerResponse.createBySuccessMsg("修改密码成功");
             }
         } else {
-            return ServerResponse.createByErrorMsg("token错误,请再次获取充值密码的token");
+            return ServerResponse.createByErrorMsg("token错误,请再次获取重置密码的token");
         }
 
         return ServerResponse.createByErrorMsg("修改密码失败");

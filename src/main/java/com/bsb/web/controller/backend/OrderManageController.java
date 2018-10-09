@@ -1,11 +1,10 @@
 package com.bsb.web.controller.backend;
 
-import com.bsb.common.Const;
 import com.bsb.common.ResponseCode;
 import com.bsb.common.ServerResponse;
 import com.bsb.util.CookieUtil;
 import com.bsb.util.JsonUtil;
-import com.bsb.util.RedisUtilFactory;
+import com.bsb.util.RedisUtil;
 import com.bsb.web.pojo.User;
 import com.bsb.web.service.IOrderService;
 import com.bsb.web.service.IUserService;
@@ -18,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 /**
  * @author zeng
@@ -34,7 +32,7 @@ public class OrderManageController {
     @Autowired
     private IOrderService orderService;
     @Autowired
-    private RedisUtilFactory redisUtilFactory;
+    private RedisUtil redisUtil;
 
     @GetMapping("/list")
     public ServerResponse<PageInfo> orderList(HttpServletRequest request,
@@ -45,7 +43,7 @@ public class OrderManageController {
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMsg("用户未登录");
         }
-        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        String userJson = redisUtil.getRedisValue(loginToken);
         User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), "用户未登录");
@@ -67,7 +65,7 @@ public class OrderManageController {
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMsg("用户未登录");
         }
-        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        String userJson = redisUtil.getRedisValue(loginToken);
         User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), "用户未登录");
@@ -90,7 +88,7 @@ public class OrderManageController {
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMsg("用户未登录");
         }
-        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        String userJson = redisUtil.getRedisValue(loginToken);
         User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), "用户未登录");
@@ -111,7 +109,7 @@ public class OrderManageController {
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMsg("用户未登录");
         }
-        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        String userJson = redisUtil.getRedisValue(loginToken);
         User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), "用户未登录");

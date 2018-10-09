@@ -5,7 +5,7 @@ import com.bsb.common.ResponseCode;
 import com.bsb.common.ServerResponse;
 import com.bsb.util.CookieUtil;
 import com.bsb.util.JsonUtil;
-import com.bsb.util.RedisUtilFactory;
+import com.bsb.util.RedisUtil;
 import com.bsb.web.pojo.User;
 import com.bsb.web.service.IUserService;
 import org.apache.commons.lang3.StringUtils;
@@ -30,7 +30,7 @@ public class UserController {
     @Autowired
     private IUserService userService;
     @Autowired
-    private RedisUtilFactory redisUtilFactory;
+    private RedisUtil redisUtil;
 
     /**
      * 用户登录
@@ -45,7 +45,7 @@ public class UserController {
         ServerResponse<User> serverResponse = userService.login(username, password);
         if (serverResponse.isSuccess()) {
             CookieUtil.writeLoginToken(response, session.getId());
-            redisUtilFactory.setRedisValueEx(session.getId(), JsonUtil.objToString(serverResponse.getData()),
+            redisUtil.setRedisValueEx(session.getId(), JsonUtil.objToString(serverResponse.getData()),
                     Const.RedisCacheExTime.REDIS_SESSION_EXTIME);
         }
         return serverResponse;
@@ -55,7 +55,7 @@ public class UserController {
     public ServerResponse<String> logout(HttpServletRequest request, HttpServletResponse response) {
         String loginToken = CookieUtil.readLoginToken(request);
         CookieUtil.delLoginToken(request, response);
-        redisUtilFactory.delete(loginToken);
+        redisUtil.delete(loginToken);
         return ServerResponse.createBySuccessMsg("注销成功");
     }
 
@@ -78,7 +78,7 @@ public class UserController {
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMsg("用户未登录");
         }
-        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        String userJson = redisUtil.getRedisValue(loginToken);
         User user = JsonUtil.stringToObj(userJson, User.class);
         user.setPassword(StringUtils.EMPTY);
 
@@ -111,7 +111,7 @@ public class UserController {
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMsg("用户未登录");
         }
-        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        String userJson = redisUtil.getRedisValue(loginToken);
         User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorMsg("用户未登录");
@@ -128,7 +128,7 @@ public class UserController {
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMsg("用户未登录");
         }
-        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        String userJson = redisUtil.getRedisValue(loginToken);
         User currentUser = JsonUtil.stringToObj(userJson, User.class);
         if (currentUser == null) {
             return ServerResponse.createByErrorMsg("用户未登录");
@@ -139,7 +139,7 @@ public class UserController {
 
         ServerResponse<User> response = userService.updateInfo(user);
         if (response.isSuccess()) {
-            redisUtilFactory.setRedisValueEx(loginToken, JsonUtil.objToString(user),
+            redisUtil.setRedisValueEx(loginToken, JsonUtil.objToString(user),
                     Const.RedisCacheExTime.REDIS_SESSION_EXTIME);
         }
 
@@ -154,7 +154,7 @@ public class UserController {
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMsg("用户未登录");
         }
-        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        String userJson = redisUtil.getRedisValue(loginToken);
         User currentUser = JsonUtil.stringToObj(userJson, User.class);
         if (currentUser == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), "未登录，需要强制登录");

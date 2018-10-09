@@ -1,6 +1,6 @@
 package com.bsb.redis;
 
-import com.bsb.util.RedisUtilFactory;
+import com.bsb.util.RedisUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +12,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class RedisTest {
 
     @Autowired
-    private RedisUtilFactory redisUtilFactory;
+    private RedisUtil redisUtil;
 
     @Test
     public void set() {
-        redisUtilFactory.setRedisValueEx("123", "1212", 30);
+        redisUtil.setRedisValueEx("123", "1212", 30);
     }
 }

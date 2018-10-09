@@ -4,7 +4,7 @@ import com.bsb.common.ResponseCode;
 import com.bsb.common.ServerResponse;
 import com.bsb.util.CookieUtil;
 import com.bsb.util.JsonUtil;
-import com.bsb.util.RedisUtilFactory;
+import com.bsb.util.RedisUtil;
 import com.bsb.web.pojo.User;
 import com.bsb.web.service.ICategoryService;
 import com.bsb.web.service.IUserService;
@@ -30,7 +30,7 @@ public class CategoryManageController {
     @Autowired
     private ICategoryService categoryService;
     @Autowired
-    private RedisUtilFactory redisUtilFactory;
+    private RedisUtil redisUtil;
 
     @PostMapping("/addCategory")
     public ServerResponse addCategory(HttpServletRequest request, String categoryName,
@@ -41,7 +41,7 @@ public class CategoryManageController {
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMsg("用户未登录");
         }
-        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        String userJson = redisUtil.getRedisValue(loginToken);
         User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), "用户未登录");
@@ -65,7 +65,7 @@ public class CategoryManageController {
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMsg("用户未登录");
         }
-        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        String userJson = redisUtil.getRedisValue(loginToken);
         User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), "用户未登录");
@@ -88,7 +88,7 @@ public class CategoryManageController {
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMsg("用户未登录");
         }
-        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        String userJson = redisUtil.getRedisValue(loginToken);
         User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), "用户未登录");
@@ -113,7 +113,7 @@ public class CategoryManageController {
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMsg("用户未登录");
         }
-        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        String userJson = redisUtil.getRedisValue(loginToken);
         User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), "用户未登录");

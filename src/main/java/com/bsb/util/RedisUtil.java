@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
  * @author zeng
  */
 @Component
-public class RedisUtilFactory {
+public class RedisUtil {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -27,7 +27,9 @@ public class RedisUtilFactory {
     public void setRedisValue(String key, String value) {
 
         try {
+
             redisTemplate.opsForValue().set(key, value);
+
         } catch (Exception e) {
             logger.error("set key {} value {} error", key, value, e);
         }
