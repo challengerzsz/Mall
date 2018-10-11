@@ -40,9 +40,9 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.springframework.boot:spring-boot-starter-websocket')
     compile('org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.2')
-//    compile('org.springframework.session:spring-session-data-redis')
+    compile('org.springframework.session:spring-session-data-redis')
     compileOnly "org.springframework.boot:spring-boot-configuration-processor"
-//    compile('org.springframework.session:spring-session-jdbc')
+    compile('org.springframework.session:spring-session-jdbc')
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
     compile group: 'com.github.pagehelper', name: 'pagehelper', version: '5.1.4'
     compile group: 'com.github.jsqlparser', name: 'jsqlparser', version: '1.2'
@@ -54,6 +54,11 @@ dependencies {
     compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.2'
     // https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-mapper-asl
     compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version: '1.9.13'
+    // https://mvnrepository.com/artifact/redis.clients/jedis
+    compile group: 'redis.clients', name: 'jedis', version: '2.9.0'
+
+
+
     //    alipay
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
     compile group: 'commons-codec', name: 'commons-codec', version: '1.10'

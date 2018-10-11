@@ -1,5 +1,6 @@
 package com.bsb.config;
 
+import com.bsb.properties.ClusterConfigurationProperties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisClusterConfiguration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -19,11 +22,9 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @EnableCaching
 public class RedisConfig {
 
-    /**
-     * 注入 RedisConnectionFactory
-     */
+
     @Autowired
-    private RedisConnectionFactory redisConnectionFactory;
+    private ClusterConfigurationProperties clusterConfigurationProperties;
 
 
     @Bean
@@ -51,5 +52,15 @@ public class RedisConfig {
         redisTemplate.setEnableDefaultSerializer(true);
         redisTemplate.afterPropertiesSet();
         return redisTemplate;
+    }
+
+    /**
+     * 另一种获取connect去操作redis集群的工厂bean
+     * @return
+     */
+    @Bean
+    public RedisConnectionFactory connectionFactory() {
+        return new JedisConnectionFactory(
+                new RedisClusterConfiguration(clusterConfigurationProperties.getNodes()));
     }
 }

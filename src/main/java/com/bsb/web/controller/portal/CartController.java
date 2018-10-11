@@ -5,7 +5,7 @@ import com.bsb.common.ResponseCode;
 import com.bsb.common.ServerResponse;
 import com.bsb.util.CookieUtil;
 import com.bsb.util.JsonUtil;
-import com.bsb.util.RedisUtilFactory;
+import com.bsb.util.RedisUtil;
 import com.bsb.web.pojo.User;
 import com.bsb.web.service.ICartService;
 import com.bsb.web.vo.CartVo;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 /**
  * @author zeng
@@ -33,7 +32,7 @@ public class CartController {
     @Autowired
     private ICartService cartService;
     @Autowired
-    private RedisUtilFactory redisUtilFactory;
+    private RedisUtil redisUtil;
 
     @PostMapping("/add")
     public ServerResponse<CartVo> add(HttpServletRequest request, Integer count, Integer productId) {
@@ -43,7 +42,7 @@ public class CartController {
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMsg("用户未登录");
         }
-        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        String userJson = redisUtil.getRedisValue(loginToken);
         User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
@@ -60,7 +59,7 @@ public class CartController {
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMsg("用户未登录");
         }
-        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        String userJson = redisUtil.getRedisValue(loginToken);
         User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
@@ -77,7 +76,7 @@ public class CartController {
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMsg("用户未登录");
         }
-        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        String userJson = redisUtil.getRedisValue(loginToken);
         User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
@@ -94,7 +93,7 @@ public class CartController {
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMsg("用户未登录");
         }
-        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        String userJson = redisUtil.getRedisValue(loginToken);
         User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
@@ -112,7 +111,7 @@ public class CartController {
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMsg("用户未登录");
         }
-        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        String userJson = redisUtil.getRedisValue(loginToken);
         User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
@@ -129,7 +128,7 @@ public class CartController {
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMsg("用户未登录");
         }
-        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        String userJson = redisUtil.getRedisValue(loginToken);
         User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
@@ -146,7 +145,7 @@ public class CartController {
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMsg("用户未登录");
         }
-        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        String userJson = redisUtil.getRedisValue(loginToken);
         User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
@@ -163,7 +162,7 @@ public class CartController {
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMsg("用户未登录");
         }
-        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        String userJson = redisUtil.getRedisValue(loginToken);
         User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
@@ -180,7 +179,7 @@ public class CartController {
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMsg("用户未登录");
         }
-        String userJson = redisUtilFactory.getRedisValue(loginToken);
+        String userJson = redisUtil.getRedisValue(loginToken);
         User user = JsonUtil.stringToObj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createBySuccess(0);
