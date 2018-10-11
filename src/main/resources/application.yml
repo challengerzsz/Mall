@@ -6,9 +6,13 @@ server:
 spring:
   redis:
     cluster:
-      nodes:
-    port: 6379
-    database: 0
+      nodes[0]: 127.0.0.1:6379
+      nodes[1]: 127.0.0.1:6381
+      nodes[2]: 127.0.0.1:6382
+      nodes[3]: 127.0.0.1:6383
+      nodes[4]: 127.0.0.1:6384
+      nodes[5]: 127.0.0.1:6385
+      max-redirects: 3
     jedis:
       pool:
         max-active: 8
@@ -23,8 +27,8 @@ spring:
     password: agytorudhcv11
 
 
-#  session:
-#    store-type: redis
+  session:
+    store-type: redis
   servlet:
     multipart:
       enabled: true

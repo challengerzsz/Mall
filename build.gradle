@@ -54,6 +54,11 @@ dependencies {
     compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.2'
     // https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-mapper-asl
     compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version: '1.9.13'
+    // https://mvnrepository.com/artifact/redis.clients/jedis
+    compile group: 'redis.clients', name: 'jedis', version: '2.9.0'
+
+
+
     //    alipay
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
     compile group: 'commons-codec', name: 'commons-codec', version: '1.10'
