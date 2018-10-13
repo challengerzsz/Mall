@@ -1,7 +1,5 @@
 server:
   port: 8060
-  servlet:
-    context-path: /mall
 
 spring:
   redis:
