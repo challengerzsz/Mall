@@ -12,6 +12,16 @@ public class MallProperties {
 
     private AliPayProperties aliPay;
 
+    private ScheduleProperties task;
+
+    public ScheduleProperties getTask() {
+        return task;
+    }
+
+    public void setTask(ScheduleProperties task) {
+        this.task = task;
+    }
+
     public AliPayProperties getAliPay() {
         return aliPay;
     }

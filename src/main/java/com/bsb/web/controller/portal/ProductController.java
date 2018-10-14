@@ -5,10 +5,7 @@ import com.bsb.web.service.IProductService;
 import com.bsb.web.vo.ProductDetiailVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author zeng
@@ -20,8 +17,8 @@ public class ProductController {
     @Autowired
     private IProductService productService;
 
-    @GetMapping("/getDetail")
-    public ServerResponse<ProductDetiailVo> getDetail(Integer productId) {
+    @GetMapping("/getDetail/{productId}")
+    public ServerResponse<ProductDetiailVo> getDetail(@PathVariable Integer productId) {
 
         return productService.getProductDetail(productId);
     }
