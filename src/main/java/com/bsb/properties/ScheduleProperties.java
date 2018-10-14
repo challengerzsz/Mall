@@ -8,6 +8,16 @@ public class ScheduleProperties {
 
     private Integer hour;
 
+    private Long lockTimeOut;
+
+    public Long getLockTimeOut() {
+        return lockTimeOut;
+    }
+
+    public void setLockTimeOut(Long lockTimeOut) {
+        this.lockTimeOut = lockTimeOut;
+    }
+
     public Integer getHour() {
         return hour;
     }

@@ -52,3 +52,4 @@ bsb:
 #      callBackUrl: http://www.xiyoumobileback.club:8080/mall/order/aliPayCallBack
     task:
       hour: 2
+      lockTimeOut: 5000

@@ -100,6 +100,39 @@ public class RedisUtil {
         return result;
     }
 
+    /**
+     * 设置键值，若存在则不操作并返回true
+     * @param key
+     * @param value
+     * @return
+     */
+    public Boolean setIfAbsen(String key, String value) {
+
+        Boolean result = false;
+
+        try {
+            result = redisTemplate.opsForValue().setIfAbsent(key, value);
+        } catch (Exception e) {
+            logger.error("setIfAbsent key {} error ", key);
+        }
+
+        return result;
+
+    }
+
+
+    public String getSetRedisValue(String key, String newValue) {
+
+        String result = null;
+
+        try {
+            result = (String) redisTemplate.opsForValue().getAndSet(key, newValue);
+        } catch (Exception e) {
+            logger.error("getAndSet new redis key {} error", key);
+        }
+
+        return result;
+    }
 
 
 }

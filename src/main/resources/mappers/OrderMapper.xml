@@ -237,7 +237,7 @@
   </select>
 
 
-  <select id="selectOrderStatusByCreateTime" resultMap="BaseResultMap" parameterMap="map">
+  <select id="selectOrderStatusByCreateTime" resultMap="BaseResultMap" parameterType="map">
     SELECT 
     <include refid="Base_Column_List"/>
     from mmall_order

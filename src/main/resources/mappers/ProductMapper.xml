@@ -217,7 +217,7 @@
     </if>
   </select>
   
-  <select id="selectStockByProductId" resultMap="int" parameterType="java.lang.Integer">
+  <select id="selectStockByProductId" resultType="int" parameterType="java.lang.Integer">
     -- 悲观锁使用主键查找是行锁，若查找不是主键则是表锁
     SELECT
     stock

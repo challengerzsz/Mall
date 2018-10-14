@@ -187,4 +187,8 @@ public class Const {
             throw new RuntimeException("未找到该枚举类型");
         }
     }
+
+    public interface RedisLock {
+        String CLOSE_ORDER_TASK_LOCK = "CLOSE_ORDER_TASK_LOCK";
+    }
 }
