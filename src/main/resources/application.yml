@@ -50,3 +50,5 @@ bsb:
     aliPay:
       callBackUrl: http://2ixehu.natappfree.cc/mall/order/aliPayCallBack
 #      callBackUrl: http://www.xiyoumobileback.club:8080/mall/order/aliPayCallBack
+    task:
+      hour: 2

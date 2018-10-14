@@ -216,5 +216,14 @@
       </foreach>
     </if>
   </select>
+  
+  <select id="selectStockByProductId" resultMap="int" parameterType="java.lang.Integer">
+    -- 悲观锁使用主键查找是行锁，若查找不是主键则是表锁
+    SELECT
+    stock
+    from mmall_product
+    where id = #{id}
+    for update
+  </select>
 
 </mapper>

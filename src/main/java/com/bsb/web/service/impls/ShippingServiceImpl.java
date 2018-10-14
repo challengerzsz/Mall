@@ -38,7 +38,6 @@ public class ShippingServiceImpl implements IShippingService {
 
     public ServerResponse<String> delete(Integer userId, Integer shippingId) {
 
-        // TODO: 18-8-8 bug
         int resultCount = shippingMapper.deleteByShippingIdUserId(userId, shippingId);
         if (resultCount > 0) {
             return ServerResponse.createBySuccessMsg("删除地址成功");

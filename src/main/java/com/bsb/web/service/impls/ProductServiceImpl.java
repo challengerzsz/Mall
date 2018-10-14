@@ -119,7 +119,6 @@ public class ProductServiceImpl implements IProductService {
         productDetiailVo.setStatus(product.getStatus());
         productDetiailVo.setStock(product.getStock());
 
-        // TODO: 18-8-7 配置自己的ftp服务器,默认值加载
         productDetiailVo.setImageHost(mallProperties.getFtp().getServerHttpPrefix());
 
         Category category = categoryMapper.selectByPrimaryKey(product.getCategoryId());
@@ -162,7 +161,6 @@ public class ProductServiceImpl implements IProductService {
         productListVo.setName(product.getName());
         productListVo.setCategoryId(product.getCategoryId());
         productListVo.setMainImage(product.getMainImage());
-        // TODO: 18-8-7 配置自己的ftp服务器,默认值加载
         productListVo.setImageHost(mallProperties.getFtp().getServerHttpPrefix());
         productListVo.setPrice(product.getPrice());
         productListVo.setSubTitle(product.getSubtitle());
