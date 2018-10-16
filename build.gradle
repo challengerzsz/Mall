@@ -56,7 +56,8 @@ dependencies {
     compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version: '1.9.13'
     // https://mvnrepository.com/artifact/redis.clients/jedis
     compile group: 'redis.clients', name: 'jedis', version: '2.9.0'
-
+    // resisson
+    compile 'org.redisson:redisson:3.8.2'
 
 
     //    alipay

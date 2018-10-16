@@ -70,21 +70,6 @@ public class UserController {
         return userService.checkValid(str, type);
     }
 
-    @GetMapping("/userInfo")
-    public ServerResponse<User> getUserInfo(HttpServletRequest request) {
-
-        String loginToken = CookieUtil.readLoginToken(request);
-        logger.error("error {}", loginToken);
-        if (StringUtils.isEmpty(loginToken)) {
-            return ServerResponse.createByErrorMsg("用户未登录");
-        }
-        String userJson = redisUtil.getRedisValue(loginToken);
-        User user = JsonUtil.stringToObj(userJson, User.class);
-        user.setPassword(StringUtils.EMPTY);
-
-        return ServerResponse.createBySuccess(user);
-    }
-
     @GetMapping("/getQuestion/{username}")
     public ServerResponse<String> forgetGetQuestion(@PathVariable String username) {
 
