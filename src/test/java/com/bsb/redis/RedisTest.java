@@ -1,17 +1,13 @@
 package com.bsb.redis;
 
-import com.bsb.config.RedisConfig;
 import com.bsb.properties.ClusterConfigurationProperties;
 import com.bsb.util.RedisUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.connection.RedisClusterConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.List;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
