@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  * @author zeng on 18-10-13.
  * @version 1.0
  */
-//@Component
+@Component
 public class CloseOrderTask {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
@@ -122,7 +122,8 @@ public class CloseOrderTask {
         //尝试获取锁
         try {
             //是否获取到锁
-            if (getLock = lock.tryLock(2, 5, TimeUnit.SECONDS)) {
+            //如果不设置waitTime为0的话如果一个逻辑或者sql执行的非常快的情况下，就会造成另一个Tomcat进程也会获取到锁执行一遍schedule
+            if (getLock = lock.tryLock(0, 5, TimeUnit.SECONDS)) {
                 logger.info("Redisson 获取到分布式锁:{} ThreadName:{}", Const.RedisLock.CLOSE_ORDER_TASK_LOCK,
                         Thread.currentThread().getName());
                 Integer hour = mallProperties.getTask().getHour();
@@ -134,6 +135,7 @@ public class CloseOrderTask {
         } catch (InterruptedException e) {
             logger.error("Redisson 分布式锁获取异常");
         } finally {
+            //未获取到锁的话就不需要释放锁，判断getLock
             if (!getLock) {
                 return;
             }
